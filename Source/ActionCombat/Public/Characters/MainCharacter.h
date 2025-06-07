@@ -6,6 +6,13 @@
 #include "GameFramework/Character.h"
 #include "MainCharacter.generated.h"
 
+class UStatsComponent;
+class UPlayerActionsComponent;
+class ULockonComponent;
+class UCombatComponent;
+class UBlockComponent;
+class UTraceComponent;
+
 UCLASS()
 class ACTIONCOMBAT_API AMainCharacter : public ACharacter
 {
@@ -13,13 +20,22 @@ class ACTIONCOMBAT_API AMainCharacter : public ACharacter
 
 public:
 	AMainCharacter();
+	virtual void Tick(float DeltaTime) override;
+	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
 protected:
 	virtual void BeginPlay() override;
 
-public:	
-	virtual void Tick(float DeltaTime) override;
-
-	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
-
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
+	UStatsComponent* Stats;
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
+	UPlayerActionsComponent* PlayerActions;
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
+	ULockonComponent* Lockon;
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
+	UCombatComponent* Combat;
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
+	UBlockComponent* Block;
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
+	UTraceComponent* Trace;
 };

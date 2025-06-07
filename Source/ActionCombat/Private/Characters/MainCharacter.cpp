@@ -3,17 +3,24 @@
 
 #include "Characters/MainCharacter.h"
 
-// Sets default values
+#include "Characters/StatsComponent.h"
+#include "Characters/PlayerActionsComponent.h"
+#include "Combat/LockonComponent.h"
+#include "Combat/CombatComponent.h"
+#include "Combat/BlockComponent.h"
+#include "Combat/TraceComponent.h"
+
 AMainCharacter::AMainCharacter()
 {
  	PrimaryActorTick.bCanEverTick = true;
 
-}
+	Stats = CreateDefaultSubobject<UStatsComponent>(TEXT("Stats"));
+	PlayerActions = CreateDefaultSubobject<UPlayerActionsComponent>(TEXT("PlayerActions"));
+	Lockon = CreateDefaultSubobject<ULockonComponent>(TEXT("Lockon"));
+	Combat = CreateDefaultSubobject<UCombatComponent>(TEXT("Combat"));
+	Block = CreateDefaultSubobject<UBlockComponent>(TEXT("Block"));
+	Trace = CreateDefaultSubobject<UTraceComponent>(TEXT("Trace"));
 
-void AMainCharacter::BeginPlay()
-{
-	Super::BeginPlay();
-	
 }
 
 void AMainCharacter::Tick(float DeltaTime)
@@ -28,3 +35,8 @@ void AMainCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCompo
 
 }
 
+void AMainCharacter::BeginPlay()
+{
+	Super::BeginPlay();
+	
+}

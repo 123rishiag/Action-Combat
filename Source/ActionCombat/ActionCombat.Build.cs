@@ -12,8 +12,11 @@ public class ActionCombat : ModuleRules
 			"Core", 
 			"CoreUObject", 
 			"Engine", 
-			"InputCore" 
-		});
+			"InputCore",
+            "UMG",
+            "Slate",
+            "SlateCore"
+        });
 
 		PrivateDependencyModuleNames.AddRange(new string[] {  });
 

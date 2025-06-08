@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Character.h"
+#include "Interfaces/MainPlayer.h"
 #include "MainCharacter.generated.h"
 
 class UStatsComponent;
@@ -14,7 +15,7 @@ class UBlockComponent;
 class UTraceComponent;
 
 UCLASS()
-class ACTIONCOMBAT_API AMainCharacter : public ACharacter
+class ACTIONCOMBAT_API AMainCharacter : public ACharacter, public IMainPlayer
 {
 	GENERATED_BODY()
 

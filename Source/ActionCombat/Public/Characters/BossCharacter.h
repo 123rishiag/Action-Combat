@@ -20,6 +20,9 @@ public:
 	virtual void Tick(float DeltaTime) override;
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
+	virtual void OnSelect_Implementation() override;
+	virtual void OnDeselect_Implementation() override;
+
 protected:
 	virtual void BeginPlay() override;
 

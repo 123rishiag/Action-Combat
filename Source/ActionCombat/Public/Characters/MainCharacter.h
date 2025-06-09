@@ -7,6 +7,8 @@
 #include "Interfaces/MainPlayer.h"
 #include "MainCharacter.generated.h"
 
+class UPlayerAnimInstance;
+
 class UStatsComponent;
 class UPlayerActionsComponent;
 class ULockonComponent;
@@ -26,6 +28,9 @@ public:
 
 protected:
 	virtual void BeginPlay() override;
+
+	UPROPERTY(BlueprintReadOnly)
+	UPlayerAnimInstance* PlayerAnim;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
 	UStatsComponent* Stats;

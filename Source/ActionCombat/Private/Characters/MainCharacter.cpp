@@ -2,6 +2,7 @@
 
 
 #include "Characters/MainCharacter.h"
+#include "Animations/PlayerAnimInstance.h"
 
 #include "Characters/StatsComponent.h"
 #include "Characters/PlayerActionsComponent.h"
@@ -39,4 +40,6 @@ void AMainCharacter::BeginPlay()
 {
 	Super::BeginPlay();
 	
+	PlayerAnim = Cast<UPlayerAnimInstance>(GetMesh()->GetAnimInstance());
+
 }

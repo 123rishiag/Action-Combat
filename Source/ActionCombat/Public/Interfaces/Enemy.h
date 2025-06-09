@@ -21,11 +21,12 @@ class ACTIONCOMBAT_API IEnemy
 	GENERATED_BODY()
 
 public:
-
-	UFUNCTION(BlueprintImplementableEvent)
+	/// Use BlueprintImplementableEvent in UFUNCTION Macro to call it from BossCharacter Blueprint EventGraph instead of code
+	/// in that case it is not necessary to implement OnSelect_Implementation in the classes inheriting from this interface.
+	UFUNCTION(BlueprintNativeEvent)
 	void OnSelect();
 
-	UFUNCTION(BlueprintImplementableEvent)
+	UFUNCTION(BlueprintNativeEvent)
 	void OnDeselect();
 
 };

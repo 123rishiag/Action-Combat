@@ -28,6 +28,22 @@ void ABossCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCompo
 
 }
 
+void ABossCharacter::OnSelect_Implementation()
+{
+	if (IsValid(LockonWidget))
+	{
+		LockonWidget->SetVisibility(true);
+	}
+}
+
+void ABossCharacter::OnDeselect_Implementation()
+{
+	if (IsValid(LockonWidget))
+	{
+		LockonWidget->SetVisibility(false);
+	}
+}
+
 void ABossCharacter::BeginPlay()
 {
 	Super::BeginPlay();

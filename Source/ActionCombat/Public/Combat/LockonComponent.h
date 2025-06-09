@@ -11,6 +11,14 @@ class APlayerController;
 class UCharacterMovementComponent;
 class USpringArmComponent;
 
+DECLARE_DYNAMIC_MULTICAST_SPARSE_DELEGATE_OneParam(
+	FOnUpdatedTargetSignature, 
+	ULockonComponent,
+	OnUpdatedTargetDelegate,
+	AActor*,
+	NewTargetActorRef
+);
+
 UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
 class ACTIONCOMBAT_API ULockonComponent : public UActorComponent
 {
@@ -21,6 +29,9 @@ public:
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
 
 	AActor* CurrentTargetActor;
+
+	UPROPERTY(BlueprintAssignable)
+	FOnUpdatedTargetSignature OnUpdatedTargetDelegate;
 
 protected:
 	virtual void BeginPlay() override;

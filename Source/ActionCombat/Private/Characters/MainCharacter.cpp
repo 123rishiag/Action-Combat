@@ -4,6 +4,7 @@
 #include "Characters/MainCharacter.h"
 #include "Animations/PlayerAnimInstance.h"
 
+#include "Characters/EStat.h"
 #include "Characters/StatsComponent.h"
 #include "Characters/PlayerActionsComponent.h"
 #include "Combat/LockonComponent.h"
@@ -38,7 +39,12 @@ void AMainCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCompo
 
 float AMainCharacter::GetDamage()
 {
-	return 10.f;
+	return Stats->Stats[EStat::Strength];
+}
+
+bool AMainCharacter::HasEnoughStamina(float Cost)
+{
+	return Stats->Stats[EStat::Stamina] >= Cost;
 }
 
 void AMainCharacter::BeginPlay()

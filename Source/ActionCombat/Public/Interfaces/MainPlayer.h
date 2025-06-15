@@ -22,4 +22,5 @@ class ACTIONCOMBAT_API IMainPlayer
 
 public:
 
+	virtual bool HasEnoughStamina(float Cost) { return true; }
 };

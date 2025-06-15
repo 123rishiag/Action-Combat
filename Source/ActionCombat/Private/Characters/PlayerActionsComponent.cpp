@@ -2,6 +2,9 @@
 
 
 #include "Characters/PlayerActionsComponent.h"
+#include "GameFramework/Character.h"
+#include "GameFramework/CharacterMovementComponent.h"
+#include "Interfaces/MainPlayer.h"
 
 UPlayerActionsComponent::UPlayerActionsComponent()
 {
@@ -15,9 +18,41 @@ void UPlayerActionsComponent::TickComponent(float DeltaTime, ELevelTick TickType
 
 }
 
+void UPlayerActionsComponent::Sprint()
+{
+	if (!IPlayerRef->HasEnoughStamina(SprintCost))
+	{
+		Walk();
+		return;
+	}
+	
+	if (MovementComp->Velocity.Equals(FVector::ZeroVector, 1))
+	{
+		return;
+	}
+
+	MovementComp->MaxWalkSpeed = SprintSpeed;
+	OnSprintDelegate.Broadcast(SprintCost);
+}
+
+void UPlayerActionsComponent::Walk()
+{
+	MovementComp->MaxWalkSpeed = WalkSpeed;
+	OnSprintDelegate.Broadcast(SprintCost);
+}
+
 void UPlayerActionsComponent::BeginPlay()
 {
 	Super::BeginPlay();
 	
+	CharacterRef = GetOwner<ACharacter>();
+	MovementComp = CharacterRef->GetCharacterMovement();
+
+	if (!CharacterRef->Implements<UMainPlayer>())
+	{
+		return;
+	}
+
+	IPlayerRef = Cast<IMainPlayer>(CharacterRef);
 }
 

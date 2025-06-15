@@ -4,9 +4,14 @@
 #include "Characters/BossCharacter.h"
 #include "Components/WidgetComponent.h"
 
+#include "Characters/EStat.h"
+#include "Characters/StatsComponent.h"
+
 ABossCharacter::ABossCharacter()
 {
 	PrimaryActorTick.bCanEverTick = true;
+
+	Stats = CreateDefaultSubobject<UStatsComponent>(TEXT("Stats"));
 
 	LockonWidget = CreateDefaultSubobject<UWidgetComponent>(TEXT("LockonWidget"));
 	LockonWidget->SetupAttachment(RootComponent);

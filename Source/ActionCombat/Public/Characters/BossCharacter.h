@@ -8,7 +8,7 @@
 #include "Components/WidgetComponent.h"
 #include "BossCharacter.generated.h"
 
-//class UWidgetComponent;
+class UStatsComponent;
 
 UCLASS()
 class ACTIONCOMBAT_API ABossCharacter : public ACharacter, public IEnemy
@@ -26,6 +26,10 @@ public:
 protected:
 	virtual void BeginPlay() override;
 
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
+	UStatsComponent* Stats;
+
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "UI")
 	UWidgetComponent* LockonWidget;
+
 };

@@ -10,6 +10,8 @@
 #include "BossCharacter.generated.h"
 
 class UStatsComponent;
+class UEnemyProjectileComponent;
+class ULookAtPlayerComponent;
 class UPawnSensingComponent;
 class UBlackboardComponent;
 
@@ -37,6 +39,12 @@ protected:
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
 	UStatsComponent* Stats;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
+	UEnemyProjectileComponent* EnemyProjectileComp;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
+	ULookAtPlayerComponent* LookAtPlayerComp;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "AI")
 	UPawnSensingComponent* PawnSensingComp;

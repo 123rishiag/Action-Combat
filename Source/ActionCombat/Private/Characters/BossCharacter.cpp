@@ -6,6 +6,8 @@
 
 #include "Characters/EStat.h"
 #include "Characters/StatsComponent.h"
+#include "Combat/EnemyProjectileComponent.h"
+#include "Characters/LookAtPlayerComponent.h"
 #include "Perception/PawnSensingComponent.h"
 #include "AIController.h"
 #include "BehaviorTree/BlackboardComponent.h"
@@ -21,6 +23,8 @@ ABossCharacter::ABossCharacter()
 	LockonWidget->SetVisibility(false);
 
 	Stats = CreateDefaultSubobject<UStatsComponent>(TEXT("Stats"));
+	EnemyProjectileComp = CreateDefaultSubobject<UEnemyProjectileComponent>(TEXT("EnemyProjectileComp"));
+	LookAtPlayerComp = CreateDefaultSubobject<ULookAtPlayerComponent>(TEXT("LookAtPlayerComp"));
 
 	PawnSensingComp = CreateDefaultSubobject<UPawnSensingComponent>(TEXT("PawnSensingComp"));
 	PawnSensingComp->SightRadius = 3000.0f;

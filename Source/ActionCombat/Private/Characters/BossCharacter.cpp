@@ -7,6 +7,8 @@
 #include "Characters/EStat.h"
 #include "Characters/StatsComponent.h"
 #include "Perception/PawnSensingComponent.h"
+#include "AIController.h"
+#include "BehaviorTree/BlackboardComponent.h"
 
 ABossCharacter::ABossCharacter()
 {
@@ -56,14 +58,30 @@ void ABossCharacter::OnDeselect_Implementation()
 
 void ABossCharacter::DetectPawn(APawn* DetectedPawn, APawn* PawnToDetect)
 {
-	if (DetectedPawn != PawnToDetect) { return; }
+	EEnemyState CurrentState = static_cast<EEnemyState>(BlackBoardComp->GetValueAsEnum(
+		TEXT("CurrentState")
+	));
 
-	UE_LOG(LogTemp, Warning, TEXT("Player Detected!"));
+	if (DetectedPawn != PawnToDetect && CurrentState != EEnemyState::IDLE) 
+	{ 
+		return; 
+	}
+
+	BlackBoardComp->SetValueAsEnum(
+		TEXT("CurrentState"),
+		EEnemyState::RANGE
+	);
 }
 
 void ABossCharacter::BeginPlay()
 {
 	Super::BeginPlay();
 
+	BlackBoardComp = GetController<AAIController>()->GetBlackboardComponent();
+
+	BlackBoardComp->SetValueAsEnum(
+		TEXT("CurrentState"),
+		InitialState
+	);
 }
 

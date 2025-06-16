@@ -5,11 +5,13 @@
 #include "CoreMinimal.h"
 #include "GameFramework/Character.h"
 #include "Interfaces/Enemy.h"
+#include "Characters/EEnemyState.h"
 #include "Components/WidgetComponent.h"
 #include "BossCharacter.generated.h"
 
 class UStatsComponent;
 class UPawnSensingComponent;
+class UBlackboardComponent;
 
 UCLASS()
 class ACTIONCOMBAT_API ABossCharacter : public ACharacter, public IEnemy
@@ -38,5 +40,11 @@ protected:
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "AI")
 	UPawnSensingComponent* PawnSensingComp;
+
+private:
+	UPROPERTY(EditAnywhere)
+	TEnumAsByte<EEnemyState> InitialState;
+
+	UBlackboardComponent* BlackBoardComp;
 
 };

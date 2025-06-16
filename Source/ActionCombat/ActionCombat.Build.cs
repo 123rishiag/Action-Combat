@@ -15,7 +15,8 @@ public class ActionCombat : ModuleRules
 			"InputCore",
             "UMG",
             "Slate",
-            "SlateCore"
+            "SlateCore",
+            "AIModule"
         });
 
 		PrivateDependencyModuleNames.AddRange(new string[] {  });

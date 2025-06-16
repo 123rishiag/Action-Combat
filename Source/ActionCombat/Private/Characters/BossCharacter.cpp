@@ -6,18 +6,23 @@
 
 #include "Characters/EStat.h"
 #include "Characters/StatsComponent.h"
+#include "Perception/PawnSensingComponent.h"
 
 ABossCharacter::ABossCharacter()
 {
 	PrimaryActorTick.bCanEverTick = true;
-
-	Stats = CreateDefaultSubobject<UStatsComponent>(TEXT("Stats"));
 
 	LockonWidget = CreateDefaultSubobject<UWidgetComponent>(TEXT("LockonWidget"));
 	LockonWidget->SetupAttachment(RootComponent);
 	LockonWidget->SetWidgetSpace(EWidgetSpace::Screen);
 	LockonWidget->SetDrawSize(FVector2D(200, 200));
 	LockonWidget->SetVisibility(false);
+
+	Stats = CreateDefaultSubobject<UStatsComponent>(TEXT("Stats"));
+
+	PawnSensingComp = CreateDefaultSubobject<UPawnSensingComponent>(TEXT("PawnSensingComp"));
+	PawnSensingComp->SightRadius = 3000.0f;
+	PawnSensingComp->SetPeripheralVisionAngle(180.0f);
 
 }
 
@@ -47,6 +52,13 @@ void ABossCharacter::OnDeselect_Implementation()
 	{
 		LockonWidget->SetVisibility(false);
 	}
+}
+
+void ABossCharacter::DetectPawn(APawn* DetectedPawn, APawn* PawnToDetect)
+{
+	if (DetectedPawn != PawnToDetect) { return; }
+
+	UE_LOG(LogTemp, Warning, TEXT("Player Detected!"));
 }
 
 void ABossCharacter::BeginPlay()

@@ -26,4 +26,7 @@ private:
 	UPROPERTY(EditAnywhere)
 	UAnimMontage* AnimMontage;
 
+	UPROPERTY()
+	double Threshold = 0.9;
+
 };

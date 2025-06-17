@@ -14,8 +14,12 @@ class ACTIONCOMBAT_API UBossAnimInstance : public UAnimInstance
 {
 	GENERATED_BODY()
 
-protected:
+public:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	float CurrentSpeed = 0.f;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	bool bIsCharging = false;
+
 };

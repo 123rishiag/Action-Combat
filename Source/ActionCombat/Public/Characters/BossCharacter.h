@@ -7,16 +7,19 @@
 #include "Interfaces/Enemy.h"
 #include "Characters/EEnemyState.h"
 #include "Components/WidgetComponent.h"
+#include "Interfaces/Fighter.h"
 #include "BossCharacter.generated.h"
 
 class UStatsComponent;
+class UTraceComponent;
+class UCombatComponent;
 class UEnemyProjectileComponent;
 class ULookAtPlayerComponent;
 class UPawnSensingComponent;
 class UBlackboardComponent;
 
 UCLASS()
-class ACTIONCOMBAT_API ABossCharacter : public ACharacter, public IEnemy
+class ACTIONCOMBAT_API ABossCharacter : public ACharacter, public IEnemy, public IFighter
 {
 	GENERATED_BODY()
 
@@ -31,6 +34,14 @@ public:
 	UFUNCTION(BlueprintCallable)
 	void DetectPawn(APawn* DetectedPawn, APawn* PawnToDetect);
 
+	virtual float GetDamage() override;
+
+	virtual void Attack() override;
+
+	virtual float GetAnimDuration() override;
+
+	virtual float GetMeleeRange() override;
+
 protected:
 	virtual void BeginPlay() override;
 
@@ -39,6 +50,12 @@ protected:
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
 	UStatsComponent* Stats;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
+	UTraceComponent* Trace;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
+	UCombatComponent* Combat;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
 	UEnemyProjectileComponent* EnemyProjectileComp;

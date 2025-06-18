@@ -6,11 +6,14 @@
 
 #include "Characters/EStat.h"
 #include "Characters/StatsComponent.h"
+#include "Combat/TraceComponent.h"
+#include "Combat/CombatComponent.h"
 #include "Combat/EnemyProjectileComponent.h"
 #include "Characters/LookAtPlayerComponent.h"
 #include "Perception/PawnSensingComponent.h"
 #include "AIController.h"
 #include "BehaviorTree/BlackboardComponent.h"
+#include "GameFramework/CharacterMovementComponent.h"
 
 ABossCharacter::ABossCharacter()
 {
@@ -23,12 +26,20 @@ ABossCharacter::ABossCharacter()
 	LockonWidget->SetVisibility(false);
 
 	Stats = CreateDefaultSubobject<UStatsComponent>(TEXT("Stats"));
+	Trace = CreateDefaultSubobject<UTraceComponent>(TEXT("Trace"));
+	Combat = CreateDefaultSubobject<UCombatComponent>(TEXT("Combat"));
 	EnemyProjectileComp = CreateDefaultSubobject<UEnemyProjectileComponent>(TEXT("EnemyProjectileComp"));
 	LookAtPlayerComp = CreateDefaultSubobject<ULookAtPlayerComponent>(TEXT("LookAtPlayerComp"));
 
 	PawnSensingComp = CreateDefaultSubobject<UPawnSensingComponent>(TEXT("PawnSensingComp"));
 	PawnSensingComp->SightRadius = 3000.0f;
 	PawnSensingComp->SetPeripheralVisionAngle(180.0f);
+
+	bUseControllerRotationPitch = false;
+	bUseControllerRotationYaw = false;
+	bUseControllerRotationRoll = false;
+
+	GetCharacterMovement()->bOrientRotationToMovement = true;
 
 }
 
@@ -75,6 +86,26 @@ void ABossCharacter::DetectPawn(APawn* DetectedPawn, APawn* PawnToDetect)
 		TEXT("CurrentState"),
 		EEnemyState::RANGE
 	);
+}
+
+float ABossCharacter::GetDamage()
+{
+	return Stats->Stats[EStat::Strength];
+}
+
+void ABossCharacter::Attack()
+{
+	Combat->RandomAttack();
+}
+
+float ABossCharacter::GetAnimDuration()
+{
+	return Combat->AnimDuration;
+}
+
+float ABossCharacter::GetMeleeRange()
+{
+	return Stats->Stats[EStat::MeleeRange];
 }
 
 void ABossCharacter::BeginPlay()

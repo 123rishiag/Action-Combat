@@ -17,6 +17,7 @@ class ACTIONCOMBAT_API UBTT_RangeAttack : public UBTTaskNode
 	GENERATED_BODY()
 	
 public:
+	UBTT_RangeAttack();
 	virtual EBTNodeResult::Type ExecuteTask(
 		UBehaviorTreeComponent& OwnerComp,
 		uint8* NodeMemory

@@ -22,4 +22,7 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	bool bIsCharging = false;
 
+	UFUNCTION(BlueprintCallable)
+	void UpdateSpeed();
+
 };

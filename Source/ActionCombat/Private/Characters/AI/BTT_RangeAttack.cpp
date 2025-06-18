@@ -6,7 +6,13 @@
 #include "GameFramework/Character.h"
 #include "Kismet/KismetMathLibrary.h"
 #include "BehaviorTree/BlackboardComponent.h"
+#include "Interfaces/Fighter.h"
 #include "Characters/EEnemyState.h"
+
+UBTT_RangeAttack::UBTT_RangeAttack()
+{
+	bCreateNodeInstance = true;
+}
 
 EBTNodeResult::Type UBTT_RangeAttack::ExecuteTask(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory)
 {
@@ -15,6 +21,23 @@ EBTNodeResult::Type UBTT_RangeAttack::ExecuteTask(UBehaviorTreeComponent& OwnerC
 	if (!IsValid(CharacterRef))
 	{
 		return EBTNodeResult::Failed;
+	}
+
+	float Distance = OwnerComp.GetBlackboardComponent()->GetValueAsFloat(
+		TEXT("Distance")
+	);
+
+	IFighter* FighterRef = Cast<IFighter>(CharacterRef);
+	if (Distance < FighterRef->GetMeleeRange())
+	{
+		OwnerComp.GetBlackboardComponent()->SetValueAsEnum(
+			TEXT("CurrentState"),
+			EEnemyState::MELEE
+		);
+
+		AbortTask(OwnerComp, NodeMemory);
+
+		return EBTNodeResult::Aborted;
 	}
 
 	CharacterRef->PlayAnimMontage(AnimMontage);

@@ -8,9 +8,11 @@
 #include "BehaviorTree/BlackboardComponent.h"
 #include "Navigation/PathFollowingComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
+#include "Characters/EEnemyState.h"
 
 UBTT_ChargeAttack::UBTT_ChargeAttack()
 {
+	bCreateNodeInstance = true;
 	bNotifyTick = true;
 	MoveCompletedDelegate.BindUFunction(
 		this,
@@ -45,10 +47,10 @@ void UBTT_ChargeAttack::ChargeAtPlayer()
 	MoveRequest.SetUsePathfinding(true);
 	MoveRequest.SetAcceptanceRadius(AcceptableRadius);
 
+	ControllerRef->ReceiveMoveCompleted.AddUnique(MoveCompletedDelegate);
+
 	ControllerRef->MoveTo(MoveRequest);
 	ControllerRef->SetFocus(PlayerRef);
-
-	ControllerRef->ReceiveMoveCompleted.AddUnique(MoveCompletedDelegate);
 
 	OriginalWalkSpeed = CharacterRef->GetCharacterMovement()->MaxWalkSpeed;
 	CharacterRef->GetCharacterMovement()->MaxWalkSpeed = ChargeWalkSpeed;
@@ -95,6 +97,11 @@ void UBTT_ChargeAttack::TickTask(UBehaviorTreeComponent& OwnerComp, uint8* NodeM
 	{
 		return;
 	}
+
+	OwnerComp.GetBlackboardComponent()->SetValueAsEnum(
+		TEXT("CurrentState"),
+		EEnemyState::MELEE
+	);
 
 	ControllerRef->ReceiveMoveCompleted.Remove(MoveCompletedDelegate);
 

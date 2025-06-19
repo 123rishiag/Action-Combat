@@ -7,6 +7,21 @@
 #include "Characters/EStat.h"
 #include "StatsComponent.generated.h"
 
+DECLARE_DYNAMIC_MULTICAST_SPARSE_DELEGATE_OneParam(
+	FOnHealthPercentUpdateSignature,
+	UStatsComponent,
+	OnHealthPercentUpdateDelegate,
+	float,
+	Percentage
+);
+
+DECLARE_DYNAMIC_MULTICAST_SPARSE_DELEGATE_OneParam(
+	FOnStaminaPercentUpdateSignature,
+	UStatsComponent,
+	OnStaminaPercentUpdateDelegate,
+	float,
+	Percentage
+);
 
 UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
 class ACTIONCOMBAT_API UStatsComponent : public UActorComponent
@@ -31,6 +46,15 @@ public:
 
 	UFUNCTION()
 	void EnableStaminaRegen();
+
+	UFUNCTION(BlueprintPure)
+	float GetStatPercentage(EStat Current, EStat Max);
+
+	UPROPERTY(BlueprintAssignable)
+	FOnHealthPercentUpdateSignature OnHealthPercentUpdateDelegate;
+
+	UPROPERTY(BlueprintAssignable)
+	FOnStaminaPercentUpdateSignature OnStaminaPercentUpdateDelegate;
 
 protected:
 	virtual void BeginPlay() override;

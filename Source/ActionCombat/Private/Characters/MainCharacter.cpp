@@ -12,6 +12,8 @@
 #include "Combat/BlockComponent.h"
 #include "Combat/TraceComponent.h"
 
+#include "Animation/AnimMontage.h"
+
 AMainCharacter::AMainCharacter()
 {
  	PrimaryActorTick.bCanEverTick = true;
@@ -45,6 +47,13 @@ float AMainCharacter::GetDamage()
 bool AMainCharacter::HasEnoughStamina(float Cost)
 {
 	return Stats->Stats[EStat::Stamina] >= Cost;
+}
+
+void AMainCharacter::HandleDeath()
+{
+	PlayAnimMontage(DeathAnimMontage);
+
+	DisableInput(GetController<APlayerController>());
 }
 
 void AMainCharacter::BeginPlay()

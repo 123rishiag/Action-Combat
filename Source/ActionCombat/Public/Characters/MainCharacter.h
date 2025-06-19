@@ -17,6 +17,8 @@ class UCombatComponent;
 class UBlockComponent;
 class UTraceComponent;
 
+class UAnimMontage;
+
 UCLASS()
 class ACTIONCOMBAT_API AMainCharacter : public ACharacter, public IMainPlayer, public IFighter
 {
@@ -28,6 +30,9 @@ public:
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 	virtual float GetDamage() override;
 	virtual bool HasEnoughStamina(float Cost) override;
+
+	UFUNCTION(BlueprintCallable)
+	void HandleDeath();
 
 protected:
 	virtual void BeginPlay() override;
@@ -47,4 +52,10 @@ protected:
 	UBlockComponent* Block;
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
 	UTraceComponent* Trace;
+
+
+private:
+	UPROPERTY(EditAnywhere)
+	UAnimMontage* DeathAnimMontage;
+
 };

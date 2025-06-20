@@ -3,6 +3,7 @@
 
 #include "Characters/MainCharacter.h"
 #include "Animations/PlayerAnimInstance.h"
+#include "Animation/AnimMontage.h"
 
 #include "Characters/EStat.h"
 #include "Characters/StatsComponent.h"
@@ -11,8 +12,6 @@
 #include "Combat/CombatComponent.h"
 #include "Combat/BlockComponent.h"
 #include "Combat/TraceComponent.h"
-
-#include "Animation/AnimMontage.h"
 
 AMainCharacter::AMainCharacter()
 {
@@ -54,6 +53,16 @@ void AMainCharacter::HandleDeath()
 	PlayAnimMontage(DeathAnimMontage);
 
 	DisableInput(GetController<APlayerController>());
+}
+
+void AMainCharacter::EndLockonWithActor(AActor* ActorRef)
+{
+	if (Lockon->CurrentTargetActor != ActorRef)
+	{
+		return;
+	}
+
+	Lockon->EndLockon();
 }
 
 void AMainCharacter::BeginPlay()

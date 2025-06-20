@@ -9,6 +9,7 @@
 #include "MainCharacter.generated.h"
 
 class UPlayerAnimInstance;
+class UAnimMontage;
 
 class UStatsComponent;
 class UPlayerActionsComponent;
@@ -16,8 +17,6 @@ class ULockonComponent;
 class UCombatComponent;
 class UBlockComponent;
 class UTraceComponent;
-
-class UAnimMontage;
 
 UCLASS()
 class ACTIONCOMBAT_API AMainCharacter : public ACharacter, public IMainPlayer, public IFighter
@@ -28,17 +27,6 @@ public:
 	AMainCharacter();
 	virtual void Tick(float DeltaTime) override;
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
-	virtual float GetDamage() override;
-	virtual bool HasEnoughStamina(float Cost) override;
-
-	UFUNCTION(BlueprintCallable)
-	void HandleDeath();
-
-protected:
-	virtual void BeginPlay() override;
-
-	UPROPERTY(BlueprintReadOnly)
-	UPlayerAnimInstance* PlayerAnim;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
 	UStatsComponent* Stats;
@@ -53,6 +41,19 @@ protected:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
 	UTraceComponent* Trace;
 
+	virtual float GetDamage() override;
+	virtual bool HasEnoughStamina(float Cost) override;
+
+	UFUNCTION(BlueprintCallable)
+	void HandleDeath();
+
+	virtual void EndLockonWithActor(AActor* ActorRef) override;
+
+protected:
+	virtual void BeginPlay() override;
+
+	UPROPERTY(BlueprintReadOnly)
+	UPlayerAnimInstance* PlayerAnim;
 
 private:
 	UPROPERTY(EditAnywhere)

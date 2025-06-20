@@ -8,11 +8,20 @@
 
 class IMainPlayer;
 class UCharacterMovementComponent;
+class UAnimMontage;
 
 DECLARE_DYNAMIC_MULTICAST_SPARSE_DELEGATE_OneParam(
 	FOnSprintSignature,
 	UPlayerActionsComponent,
 	OnSprintDelegate,
+	float,
+	Cost
+); 
+
+DECLARE_DYNAMIC_MULTICAST_SPARSE_DELEGATE_OneParam(
+	FOnRollSignature,
+	UPlayerActionsComponent,
+	OnRollDelegate,
 	float,
 	Cost
 );
@@ -32,8 +41,19 @@ public:
 	UFUNCTION(BlueprintCallable)
 	void Walk();
 
+	UFUNCTION(BlueprintCallable)
+	void Roll();
+
+	UFUNCTION()
+	void FinishRollAnim();
+
 	UPROPERTY(BlueprintAssignable)
-	FOnSprintSignature OnSprintDelegate;
+	FOnSprintSignature OnSprintDelegate; 
+	
+	UPROPERTY(BlueprintAssignable)
+	FOnRollSignature OnRollDelegate;
+
+	bool bIsRollActive = false;
 
 protected:
 	virtual void BeginPlay() override;
@@ -51,4 +71,10 @@ private:
 
 	UPROPERTY(EditAnywhere)
 	float WalkSpeed = 500.f;
+
+	UPROPERTY(EditAnywhere)
+	UAnimMontage* RollAnimMontage;
+
+	UPROPERTY(EditAnywhere)
+	float RollCost = 5.f;
 };

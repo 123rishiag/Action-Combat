@@ -5,6 +5,8 @@
 #include "GameFramework/Character.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "Interfaces/MainPlayer.h"
+#include "Kismet/KismetMathLibrary.h"
+#include "Animation/AnimMontage.h"
 
 UPlayerActionsComponent::UPlayerActionsComponent()
 {
@@ -39,6 +41,42 @@ void UPlayerActionsComponent::Walk()
 {
 	MovementComp->MaxWalkSpeed = WalkSpeed;
 	OnSprintDelegate.Broadcast(SprintCost);
+}
+
+void UPlayerActionsComponent::Roll()
+{
+	if (bIsRollActive || !IPlayerRef->HasEnoughStamina(RollCost))
+	{
+		return;
+	}
+
+	bIsRollActive = true;
+
+	OnRollDelegate.Broadcast(RollCost);
+
+	FVector Direction = CharacterRef->GetCharacterMovement()->Velocity.Length() < 1 ?
+		CharacterRef->GetActorForwardVector() :
+		CharacterRef->GetLastMovementInputVector();
+
+	FRotator NewRot = UKismetMathLibrary::MakeRotFromX(Direction);
+
+	CharacterRef->SetActorRotation(NewRot);
+	float Duration = CharacterRef->PlayAnimMontage(RollAnimMontage);
+
+	FTimerHandle RollTimerHandle;
+
+	GetWorld()->GetTimerManager().SetTimer(
+		RollTimerHandle,
+		this,
+		&UPlayerActionsComponent::FinishRollAnim,
+		Duration,
+		false
+	);
+}
+
+void UPlayerActionsComponent::FinishRollAnim()
+{
+	bIsRollActive = false;
 }
 
 void UPlayerActionsComponent::BeginPlay()

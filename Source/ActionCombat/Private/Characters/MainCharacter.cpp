@@ -4,6 +4,7 @@
 #include "Characters/MainCharacter.h"
 #include "Animations/PlayerAnimInstance.h"
 #include "Animation/AnimMontage.h"
+#include "Camera/CameraShakeBase.h"
 
 #include "Characters/EStat.h"
 #include "Characters/StatsComponent.h"
@@ -79,9 +80,14 @@ bool AMainCharacter::CanTakeDamage(AActor* Opponent)
 	return true;
 }
 
-void AMainCharacter::PlayHurtAnim()
+void AMainCharacter::PlayHurtAnim(TSubclassOf<UCameraShakeBase> CameraShakeTemplate)
 {
 	PlayAnimMontage(HurtAnimMontage);
+
+	if (CameraShakeTemplate)
+	{
+		GetController<APlayerController>()->ClientStartCameraShake(CameraShakeTemplate);
+	}
 }
 
 void AMainCharacter::BeginPlay()

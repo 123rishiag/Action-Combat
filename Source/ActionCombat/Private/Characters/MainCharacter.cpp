@@ -65,6 +65,21 @@ void AMainCharacter::EndLockonWithActor(AActor* ActorRef)
 	Lockon->EndLockon();
 }
 
+bool AMainCharacter::CanTakeDamage(AActor* Opponent)
+{
+	if (PlayerAnim->bIsBlocking)
+	{
+		return Block->CheckBlock(Opponent);
+	}
+
+	return true;
+}
+
+void AMainCharacter::PlayHurtAnim()
+{
+	PlayAnimMontage(HurtAnimMontage);
+}
+
 void AMainCharacter::BeginPlay()
 {
 	Super::BeginPlay();

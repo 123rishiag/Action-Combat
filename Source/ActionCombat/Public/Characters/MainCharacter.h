@@ -49,6 +49,11 @@ public:
 
 	virtual void EndLockonWithActor(AActor* ActorRef) override;
 
+	virtual bool CanTakeDamage(AActor* Opponent) override;
+
+	UFUNCTION(BlueprintCallable)
+	void PlayHurtAnim();
+
 protected:
 	virtual void BeginPlay() override;
 
@@ -58,5 +63,8 @@ protected:
 private:
 	UPROPERTY(EditAnywhere)
 	UAnimMontage* DeathAnimMontage;
+
+	UPROPERTY(EditAnywhere)
+	UAnimMontage* HurtAnimMontage;
 
 };

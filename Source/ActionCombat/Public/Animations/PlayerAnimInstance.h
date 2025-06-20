@@ -17,6 +17,9 @@ class ACTIONCOMBAT_API UPlayerAnimInstance : public UAnimInstance
 public:
 	UFUNCTION(BlueprintCallable)
 	void HandleUpdatedTarget(AActor* NewTargetActorRef);
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	bool bIsBlocking = false;
 	
 protected:
 

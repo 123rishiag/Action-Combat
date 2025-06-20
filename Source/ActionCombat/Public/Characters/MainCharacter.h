@@ -10,6 +10,7 @@
 
 class UPlayerAnimInstance;
 class UAnimMontage;
+class UCameraShakeBase;
 
 class UStatsComponent;
 class UPlayerActionsComponent;
@@ -52,7 +53,7 @@ public:
 	virtual bool CanTakeDamage(AActor* Opponent) override;
 
 	UFUNCTION(BlueprintCallable)
-	void PlayHurtAnim();
+	void PlayHurtAnim(TSubclassOf<UCameraShakeBase> CameraShakeTemplate);
 
 protected:
 	virtual void BeginPlay() override;

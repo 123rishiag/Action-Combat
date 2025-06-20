@@ -8,6 +8,7 @@
 #include "TraceComponent.generated.h"
 
 class USkeletalMeshComponent;
+class UParticleSystem;
 
 UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
 class ACTIONCOMBAT_API UTraceComponent : public UActorComponent
@@ -40,5 +41,8 @@ private:
 	bool bDebugMode = false;
 
 	TArray<AActor*> TargetsToIgnore;
+
+	UPROPERTY(EditAnywhere)
+	UParticleSystem* HitParticleTemplate;
 
 };

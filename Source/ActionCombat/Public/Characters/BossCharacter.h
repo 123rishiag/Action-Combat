@@ -10,6 +10,9 @@
 #include "Interfaces/Fighter.h"
 #include "BossCharacter.generated.h"
 
+class AAIController;
+class UAnimMontage;
+
 class UStatsComponent;
 class UTraceComponent;
 class UCombatComponent;
@@ -42,6 +45,15 @@ public:
 
 	virtual float GetMeleeRange() override;
 
+	UFUNCTION()
+	void HandlePlayerDeath();
+
+	UFUNCTION(BlueprintCallable)
+	void HandleDeath();
+
+	UFUNCTION()
+	void FinishDeathAnim();
+
 protected:
 	virtual void BeginPlay() override;
 
@@ -71,5 +83,10 @@ private:
 	TEnumAsByte<EEnemyState> InitialState;
 
 	UBlackboardComponent* BlackBoardComp;
+
+	UPROPERTY(EditAnywhere)
+	UAnimMontage* DeathAnimMontage;
+
+	AAIController* ControllerRef;
 
 };

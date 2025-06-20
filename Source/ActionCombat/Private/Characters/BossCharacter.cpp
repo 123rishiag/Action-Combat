@@ -3,6 +3,7 @@
 
 #include "Characters/BossCharacter.h"
 #include "Components/WidgetComponent.h"
+#include "Animation/AnimMontage.h"
 
 #include "Characters/EStat.h"
 #include "Characters/StatsComponent.h"
@@ -14,6 +15,10 @@
 #include "AIController.h"
 #include "BehaviorTree/BlackboardComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
+#include "Characters/MainCharacter.h"
+#include "BrainComponent.h"
+#include "Components/CapsuleComponent.h"
+#include "Interfaces/MainPlayer.h"
 
 ABossCharacter::ABossCharacter()
 {
@@ -77,7 +82,7 @@ void ABossCharacter::DetectPawn(APawn* DetectedPawn, APawn* PawnToDetect)
 		TEXT("CurrentState")
 	));
 
-	if (DetectedPawn != PawnToDetect && CurrentState != EEnemyState::IDLE) 
+	if (DetectedPawn != PawnToDetect && CurrentState != EEnemyState::IDLE)
 	{ 
 		return; 
 	}
@@ -108,15 +113,60 @@ float ABossCharacter::GetMeleeRange()
 	return Stats->Stats[EStat::MeleeRange];
 }
 
+void ABossCharacter::HandlePlayerDeath()
+{
+	ControllerRef->GetBlackboardComponent()->SetValueAsEnum(
+		TEXT("CurrentState"),
+		EEnemyState::GAMEOVER
+	);
+}
+
+void ABossCharacter::HandleDeath()
+{
+	float Duration = PlayAnimMontage(DeathAnimMontage);
+
+	ControllerRef->GetBrainComponent()->StopLogic("Enemy Dead");
+
+	FindComponentByClass<UCapsuleComponent>()->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+
+	FTimerHandle DestroyTimerHandle;
+
+	GetWorld()->GetTimerManager().SetTimer(
+		DestroyTimerHandle,
+		this,
+		&ABossCharacter::FinishDeathAnim,
+		Duration,
+		false
+	);
+
+	IMainPlayer* PlayerRef = GetWorld()->GetFirstPlayerController()->GetPawn<IMainPlayer>();
+	if (!PlayerRef)
+	{
+		return;
+	}
+
+	PlayerRef->EndLockonWithActor(this);
+}
+
+void ABossCharacter::FinishDeathAnim()
+{
+	Destroy();
+}
+
 void ABossCharacter::BeginPlay()
 {
 	Super::BeginPlay();
 
-	BlackBoardComp = GetController<AAIController>()->GetBlackboardComponent();
+	ControllerRef = GetController<AAIController>();
+
+	BlackBoardComp = ControllerRef->GetBlackboardComponent();
 
 	BlackBoardComp->SetValueAsEnum(
 		TEXT("CurrentState"),
 		InitialState
 	);
+
+	GetWorld()->GetFirstPlayerController()->GetPawn<AMainCharacter>()->Stats->
+		OnZeroHealthDelegate.AddDynamic(this, &ABossCharacter::HandlePlayerDeath);
 }
 
